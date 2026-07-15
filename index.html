@@ -21,6 +21,8 @@
             align-items: center;
             min-height: 100vh;
             padding: 30px;
+            position: relative;
+            transition: background 0.3s ease;
         }
 
         .container {
@@ -30,11 +32,13 @@
             padding: 40px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, .2);
             text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         h1 {
             margin-bottom: 25px;
             color: #333;
+            transition: color 0.3s ease;
         }
 
         button {
@@ -58,12 +62,14 @@
             padding: 15px;
             border-radius: 15px;
             background: #f8f9fa;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .game-title {
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 15px;
+            transition: color 0.3s ease;
         }
 
         .numbers {
@@ -105,11 +111,64 @@
         .green {
             background: #6ac36a;
         }
+
+        /* 테마 변경 버튼 스타일 */
+        .theme-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        /* 다크 모드 스타일 */
+        body.dark-mode {
+            background: linear-gradient(135deg, #121214, #1a1a24);
+        }
+
+        body.dark-mode .container {
+            background: #1e1e24;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode h1 {
+            color: #f0f0f5;
+        }
+
+        body.dark-mode .game {
+            background: #2a2a35;
+            color: #f0f0f5;
+        }
+
+        body.dark-mode .theme-btn {
+            background: rgba(42, 42, 53, 0.9);
+            color: #f0f0f5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .theme-btn:hover {
+            background: rgba(50, 50, 65, 1);
+        }
     </style>
 
 </head>
 
 <body>
+
+    <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">🌙 다크 모드</button>
 
     <div class="container">
 
@@ -124,6 +183,29 @@
     </div>
 
     <script>
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById("themeToggle");
+            
+            body.classList.toggle("dark-mode");
+            
+            if (body.classList.contains("dark-mode")) {
+                btn.innerText = "☀️ 화이트 모드";
+                localStorage.setItem("theme", "dark");
+            } else {
+                btn.innerText = "🌙 다크 모드";
+                localStorage.setItem("theme", "light");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+                const btn = document.getElementById("themeToggle");
+                if (btn) btn.innerText = "☀️ 화이트 모드";
+            }
+        });
 
         function getColor(num) {
             if (num <= 10) return "yellow";
