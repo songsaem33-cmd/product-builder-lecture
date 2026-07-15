@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 번호 추천기</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "맑은 고딕", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            width: 700px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .game {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 15px;
+            background: #f8f9fa;
+        }
+
+        .game-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .numbers {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ball {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+        }
+
+        .yellow {
+            background: #fbc400;
+        }
+
+        .blue {
+            background: #69c8f2;
+        }
+
+        .red {
+            background: #ff7272;
+        }
+
+        .gray {
+            background: #999;
+        }
+
+        .green {
+            background: #6ac36a;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎲 로또 번호 추천 (5게임)</h1>
+
+        <button onclick="generateAll()">
+            번호 추천받기
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+    <script>
+
+        function getColor(num) {
+            if (num <= 10) return "yellow";
+            if (num <= 20) return "blue";
+            if (num <= 30) return "red";
+            if (num <= 40) return "gray";
+            return "green";
+        }
+
+        function createLotto() {
+
+            let lotto = [];
+
+            while (lotto.length < 6) {
+
+                let n = Math.floor(Math.random() * 45) + 1;
+
+                if (!lotto.includes(n)) {
+                    lotto.push(n);
+                }
+
+            }
+
+            return lotto.sort((a, b) => a - b);
+
+        }
+
+        function generateAll() {
+
+            const result = document.getElementById("result");
+            result.innerHTML = "";
+
+            for (let game = 1; game <= 5; game++) {
+
+                const numbers = createLotto();
+
+                const gameDiv = document.createElement("div");
+                gameDiv.className = "game";
+
+                const title = document.createElement("div");
+                title.className = "game-title";
+                title.innerText = game + "게임";
+
+                const numberBox = document.createElement("div");
+                numberBox.className = "numbers";
+
+                numbers.forEach(num => {
+
+                    const ball = document.createElement("div");
+                    ball.className = "ball " + getColor(num);
+                    ball.innerText = num;
+
+                    numberBox.appendChild(ball);
+
+                });
+
+                gameDiv.appendChild(title);
+                gameDiv.appendChild(numberBox);
+
+                result.appendChild(gameDiv);
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
